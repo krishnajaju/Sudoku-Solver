@@ -1,16 +1,10 @@
-/*
-Program to solve the famous numbers placement puzzle 'Sudoku'.
-Uses the technique of backtracking.
-Gives you multiple solutions if there are possible.
-*/
 
 #include<iostream>
 #include <cstdio>
 using namespace std;
 #include<math.h>
 
-//This is the limit of size of sudoku board for now
-//You can increase it, but at little cost on performance
+
 #define MAX 25
 
 //Function to get input from user as unsolved Sudoku Board
@@ -63,9 +57,6 @@ void displaySolution(int sudoku[MAX][MAX], int size)
 
 // Function to check if board is solved now i. e. it has no vacancies
 // If the board is full then it is solved correctly
-// This is true because, for each number we put in any cell,  we always check if all other vacant places can be
-// filled by some numbers such that board is always in valid state
-
 bool isFull(int sudoku[MAX][MAX], int size)
 {
 	int i, j;
@@ -76,11 +67,8 @@ bool isFull(int sudoku[MAX][MAX], int size)
 	return true;
 }
 
-//Function gives all different possible numbers those can be put on board such that board will be in valid
-// state, and this is done by checking numbers already appeared in row, column and block
 //Function to find various possible values at position (r, c)
-//Returns no. of possible values at that position
-//and those values in array a[]
+//Returns no. of possible values at that position and those values in array a[]
 int findPossibleValues(int sudoku[MAX][MAX], int size, int a[], int r, int c)
 {
 	int n = 0;
@@ -115,15 +103,6 @@ int findPossibleValues(int sudoku[MAX][MAX], int size, int a[], int r, int c)
 //Gives multiple solutions with corresponding soultion no.
 //Returns when user does not want more solutions
 
-// This is our key function which solves the board
-// Initially it checks if the board is full now
-// If board is not full, then it finds the first position/cell which is vacant.
-// Then it finds all possible values at that position
-// Tries all these possible values in that cell
-// For each trial/guess/choice, it tries to solve the updated board
-// If no choice come out to be correct one for that vacant place, then definitely some previous choices are
-// wrong
-// Hence it backtracks and tries to correct the previous choices
 void SolveSudoku(int sudoku[MAX][MAX], int size, int &solution_num, bool &solved_flag, bool &enough)
 {
 	int i, j, a[MAX + 1] = { 0 }, n = 0;
@@ -178,10 +157,8 @@ void SolveSudoku(int sudoku[MAX][MAX], int size, int &solution_num, bool &solved
 		SolveSudoku(sudoku, size, solution_num, solved_flag, enough);
 	}
 
-	// Note this backtracking step, a very important step**
-	// We come at this position, this step, this line when we have already checked all possible values at
-	// sudoku[i][j] and we couldn't find the solution
-	// Put any value does not solves our board implies that we must have made wrong choice earlier
+	// We come at this position when we have already checked all possible values at sudoku[i][j] and we couldn't find the solution
+	// Put any value does not solve our board implies that we must have made wrong choice earlier
 	// so we make this sudoku[i][j] again a vacant cell and try to correct our previous guesses/choices.
 	sudoku[i][j] = 0;
 }
